@@ -22,3 +22,15 @@ Content-Type: application/json
   "dateOfBirth": "1995-09-09",
   "registeredDate": "2024-11-28"
 }
+
+### 2. Access from API-Gateway
+POST http://localhost:4004/api/patients
+Content-Type: application/json
+
+{
+  "name": "yun05",
+  "email": "yun05@example.com",
+  "address": "123 main street22",
+  "dateOfBirth": "1995-09-09",
+  "registeredDate": "2024-11-28"
+}

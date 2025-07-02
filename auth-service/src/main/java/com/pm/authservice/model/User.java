@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 import java.util.UUID;
 
 @Entity
-@Table(name="users")
+@Table(name="users") // Postgres already have a table called user, so we call it users
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
