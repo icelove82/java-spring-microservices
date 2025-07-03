@@ -26,6 +26,7 @@ Content-Type: application/json
 ### 2. Access from API-Gateway
 POST http://localhost:4004/api/patients
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "yun05",
