@@ -1,5 +1,7 @@
 package com.pm.apigateway.filter;
 
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -9,33 +11,38 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
-public class JwtValidationGatewayFilterFactory extends
-    AbstractGatewayFilterFactory<Object> {
+@RequiredArgsConstructor
+public class JwtValidationGatewayFilterFactory extends AbstractGatewayFilterFactory<Object> {
 
-  private final WebClient webClient;
+    // Autowire
+    private final WebClient.Builder webClientBuilder;
 
-  public JwtValidationGatewayFilterFactory(WebClient.Builder webClientBuilder,
-      @Value("${auth.service.url}") String authServiceUrl) {
-    this.webClient = webClientBuilder.baseUrl(authServiceUrl).build();
-  }
+    @Value("${auth.service.url}")
+    private String authServiceUrl;
 
-  @Override
-  public GatewayFilter apply(Object config) {
-    return (exchange, chain) -> {
-      String token =
-          exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+    private WebClient webClient;
 
-      if(token == null || !token.startsWith("Bearer ")) {
-        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-        return exchange.getResponse().setComplete();
-      }
+    @PostConstruct
+    private void initializeWebClient() {
+        this.webClient = webClientBuilder.baseUrl(authServiceUrl).build();
+    }
 
-      return webClient.get()
-          .uri("/validate")
-          .header(HttpHeaders.AUTHORIZATION, token)
-          .retrieve()
-          .toBodilessEntity()
-          .then(chain.filter(exchange));
-    };
-  }
+    @Override
+    public GatewayFilter apply(Object config) {
+        return (exchange, chain) -> {
+            String token = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+
+            if (token == null || !token.startsWith("Bearer ")) {
+                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                return exchange.getResponse().setComplete();
+            }
+
+            return webClient.get()
+                    .uri("/validate")
+                    .header(HttpHeaders.AUTHORIZATION, token)
+                    .retrieve()
+                    .toBodilessEntity()
+                    .then(chain.filter(exchange));
+        };
+    }
 }
