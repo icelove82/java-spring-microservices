@@ -8,7 +8,7 @@
           <list>
             <DockerEnvVarImpl>
               <option name="name" value="AUTH_SERVICE_URL" />
-              <option name="value" value="http://auth-service:4005" />
+              <option name="value" value="auth-service:4005" />
             </DockerEnvVarImpl>
           </list>
         </option>
