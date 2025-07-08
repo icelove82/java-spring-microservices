@@ -17,8 +17,8 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "name": "yun06",
-  "email": "yun06@example.com",
+  "name": "yun01",
+  "email": "yun01@example.com",
   "address": "123 main street22",
   "dateOfBirth": "1995-09-09",
   "registeredDate": "2024-11-28"
@@ -29,8 +29,8 @@ POST http://localhost:4000/patients
 Content-Type: application/json
 
 {
-  "name": "yun03",
-  "email": "yun03@example.com",
+  "name": "yun01",
+  "email": "yun01@example.com",
   "address": "123 main street22",
   "dateOfBirth": "1995-09-09",
   "registeredDate": "2024-11-28"
