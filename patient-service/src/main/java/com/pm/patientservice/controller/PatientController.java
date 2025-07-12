@@ -25,6 +25,7 @@ public class PatientController {
 
     @GetMapping
     @Operation(summary = "Get Patients")
+    @CrossOrigin
     public ResponseEntity<List<PatientResponseDTO>> getPatients() {
         List<PatientResponseDTO> patients = patientService.getPatients();
         return ResponseEntity.ok().body(patients);
